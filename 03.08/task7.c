@@ -1,9 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "xlsxwriter.h"
 
 int main()
 {
+
+    lxw_workbook  *workbook  = workbook_new("task07.xlsx");
+    lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
+    int row = 1, col = 0;
+    worksheet_write_string(worksheet, 0, col, "running time", NULL);
+    worksheet_write_string(worksheet, 0, col+1, "prime number count", NULL);
+
     
     int isPrime, max, primenumbers = 0;
 
@@ -34,8 +42,13 @@ int main()
             clock_t end = clock();
             float seconds = (float)(end - start) / CLOCKS_PER_SEC;
             printf("\n running time: %f prime number count: %d", seconds, primenumbers);
+            worksheet_write_number(worksheet, row, col,     seconds, NULL);
+            worksheet_write_number(worksheet, row, col + 1, primenumbers, NULL);
+            row++;
         }
     }
+
+    return workbook_close(workbook);
 
     
 }
